@@ -1,8 +1,12 @@
 const SlackBot = require('slackbots');
+const https = require('https');
 const axios = require('axios');
+require('dotenv').config();
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const bot = new SlackBot({
-    token: 'xoxb-709143257891-714219885185-X9x7UEnK2q51Wy4fXc1jWpCr',
+    token: process.env.TOKEN,
     name: 'jokebot'
 })
 
@@ -33,9 +37,9 @@ bot.on('message', (data) => {
 
 // Respond to Data
 function handleMessage(message) {
-    if(message.includes(' chucknorris')) {
+    if(message.includes(' chucknorris' || ' chuck norris')) {
         chuckJoke();
-    } else if(message.includes(' yomama')) {
+    } else if(message.includes(' yomama' || 'yo mama')) {
         yoMamaJoke();
     } else if(message.includes(' random')) {
         randomJoke();
@@ -59,11 +63,16 @@ function chuckJoke() {
                 `Chuck Norris: ${joke}`, 
                 params
             )
+        }).catch(err => {
+            console.log(err)
         })
 }
 
 // Tell a Yo Mama Joke
 function yoMamaJoke() {
+    const agent = new https.Agent({  
+        rejectUnauthorized: false
+    });
     axios.get('http://api.yomomma.info')
         .then(res => {
             const joke = res.data.joke;
@@ -77,6 +86,8 @@ function yoMamaJoke() {
                 `Yo Mama: ${joke}`, 
                 params
             )
+        }).catch(err => {
+            console.log(err)
         })
 }
 
