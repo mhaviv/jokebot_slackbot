@@ -37,9 +37,11 @@ bot.on('message', (data) => {
 
 // Respond to Data
 function handleMessage(message) {
-    if(message.includes(' chucknorris' || ' chuck norris')) {
+    let cnRegex = new RegExp('(chuck norris|chucknorris)');
+    let ymRegex = new RegExp('(yo mama|yomama)');
+    if(message.match(cnRegex)) {
         chuckJoke();
-    } else if(message.includes(' yomama' || 'yo mama')) {
+    } else if(message.match(ymRegex)) {
         yoMamaJoke();
     } else if(message.includes(' random')) {
         randomJoke();
