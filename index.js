@@ -37,9 +37,10 @@ bot.on('message', (data) => {
 
 // Respond to Data
 function handleMessage(message) {
-    let cnRegex = new RegExp('(chuck norris|chucknorris)');
-    let ymRegex = new RegExp('(yo mama|yomama)');
+    let cnRegex = new RegExp("(?!')(chuck norris)(?!')|(?!')(chucknorris)(?!')");
+    let ymRegex = new RegExp("(?!')(yo mama)(?!')|(?!')(yomama)(?!')");
     if(message.match(cnRegex)) {
+        console.log('logged here!!!!')
         chuckJoke();
     } else if(message.match(ymRegex)) {
         yoMamaJoke();
@@ -111,7 +112,9 @@ function runHelp() {
 
     bot.postMessageToChannel(
         'general',
-        `Type @jokebot with either 'chucknorris', 'yomama', or 'random' to get a joke`, 
+        `Type @jokebot with either 'chucknorris' or 'chuck norris' for a Chuck Norris joke"\n
+        Type @jokebot with either 'yomama' or 'yo mama' for a Yo Momma joke"\n
+        Type 'random' to get a random joke`, 
         params
-    )
+    );
 }
