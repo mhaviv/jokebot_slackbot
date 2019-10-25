@@ -24,30 +24,63 @@ bot.on('start', () => {
 })
 
 // Error Handler
-bot.on('error', (err) => console.log(err))
+bot.on('error', (err) => { 
+    console.log(err); 
+})
 
 // Message Handler
 bot.on('message', (data) => {
-    if(data.type !== 'message') {
-        return;
+    if(data.type == 'desktop_notification') {
+        console.log(data.type);
+        console.log(data)
+        return "This is not of type message";
     }
+    console.log("TEST!")
 
     handleMessage(data.text);
+    // res.sendStatus(200)
 })
 
 // Respond to Data
 function handleMessage(message) {
     let cnRegex = new RegExp("(?!')(chuck norris)(?!')|(?!')(chucknorris)(?!')");
     let ymRegex = new RegExp("(?!')(yo mama)(?!')|(?!')(yomama)(?!')");
-    if(message.match(cnRegex)) {
-        console.log('logged here!!!!')
-        chuckJoke();
+    let randomRegex = new RegExp("(?!')(random)(?!')");
+    let helpRegex = new RegExp("(?!')(help)(?!')");
+    console.log(message);
+    // switch(message) {
+    //     case "chucknorris":
+    //         chuckJoke();
+    //         console.log("Hit Chuck Norris");
+    //         break;
+    //     case "yomama":
+    //         yoMamaJoke();
+    //         console.log("Hit Yo Mama");
+    //         break;
+    //     case "help":
+    //         runHelp();
+    //         console.log("Hit Help");
+    //         break;
+    //     case "random":
+    //         randomJoke();
+    //         console.log("Hit Random");
+    //         break;
+    //     default:
+    //         // console.log(message)
+    //         return;
+    // }
+    if(message.match(helpRegex)) {
+        runHelp();
+        console.log("help running!")
     } else if(message.match(ymRegex)) {
         yoMamaJoke();
-    } else if(message.includes(' random')) {
+        console.log("Yo Mama running!!!")
+    } else if(message.match(cnRegex)) {
+        chuckJoke();
+        console.log("Chuck Norris running!!!")
+    } else if(message.match(randomRegex)) {
         randomJoke();
-    } else if(message.includes(' help')) {
-        runHelp();
+        console.log("random is running!")
     }
 }
 
@@ -110,11 +143,13 @@ function runHelp() {
         icon_emoji: ':question:'
     }
 
+    const helpMessage = `Type *@jokebot* with either *chucknorris* or *chuck norris* for a Chuck Norris joke"\n
+Type @jokebot with either *yomama* or *yo mama* for a Yo Momma joke"\n
+Type *random* to get a random joke`
+
     bot.postMessageToChannel(
         'general',
-        `Type @jokebot with either 'chucknorris' or 'chuck norris' for a Chuck Norris joke"\n
-        Type @jokebot with either 'yomama' or 'yo mama' for a Yo Momma joke"\n
-        Type 'random' to get a random joke`, 
+        `${helpMessage}`, 
         params
     );
 }
